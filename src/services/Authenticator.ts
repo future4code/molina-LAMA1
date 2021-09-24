@@ -1,4 +1,8 @@
 import * as jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import CustomError from "../error/CustomError";
+
+dotenv.config();
 
 export class Authenticator {
   public generateToken(input: AuthenticationData,
@@ -17,16 +21,26 @@ export class Authenticator {
   }
 
   public getData(token: string): AuthenticationData {
-    const payload = jwt.verify(token, process.env.JWT_KEY as string) as any;
-    const result = {
-      id: payload.id,
-      role: payload.role
-    };
-    return result;
+
+    try {
+      const payload = jwt.verify(token, process.env.JWT_KEY as string) as any;
+      const result = {
+        id: payload.id,
+        role: payload.role
+      };
+      return result;
+
+    } catch (err) {
+      throw new CustomError(
+        "Token Error",
+        406,
+        "Token is expired"
+      )
+    }
   }
 }
 
-interface AuthenticationData {
+export interface AuthenticationData {
   id: string;
   role?: string;
 }
