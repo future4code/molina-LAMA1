@@ -31,11 +31,8 @@ export class Authenticator {
       return result;
 
     } catch (err) {
-      throw new CustomError(
-        "Token Error",
-        406,
-        "Token is expired"
-      )
+      console.log(err)
+      throw err
     }
   }
 }
