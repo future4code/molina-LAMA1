@@ -3,7 +3,7 @@ import { User } from "../model/User";
 
 export class UserDatabase extends BaseDatabase {
 
-  private static TABLE_NAME = "";
+  private static TABLE_NAME = "s21_projeto_users";
 
   public async createUser(
     id: string,
@@ -13,6 +13,13 @@ export class UserDatabase extends BaseDatabase {
     role: string
   ): Promise<void> {
     try {
+      
+      console.log({  id,
+        email,
+        name,
+        password,
+        role})
+
       await this.getConnection()
         .insert({
           id,
