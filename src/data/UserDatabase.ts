@@ -13,6 +13,13 @@ export class UserDatabase extends BaseDatabase {
     role: string
   ): Promise<void> {
     try {
+      
+      console.log({  id,
+        email,
+        name,
+        password,
+        role})
+
       await this.getConnection()
         .insert({
           id,
