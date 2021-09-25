@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import {AddressInfo} from "net";
 import express from "express";
 import { userRouter } from "./routes/userRouter";
+import { showRouter } from "./routes/showRouter";
 import { bandRouter } from "./routes/bandRouter";
 dotenv.config();
 const app = express();
@@ -9,6 +10,7 @@ const app = express();
 app.use(express.json());
 
 app.use("/user", userRouter);
+app.use("/show", showRouter)
 app.use("/user",bandRouter)
 
 const server = app.listen(3000, () => {

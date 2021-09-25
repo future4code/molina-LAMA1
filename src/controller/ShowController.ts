@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import ShowBusiness from "../business/ShowBusiness/ShowBusiness";
-import SQLShowDatabase from "../data/SQLShowDatabase";
+import SQLShowDatabase from "../data/ShowDatabase/SQLShowDatabase";
 import CustomError from "../error/CustomError";
 import { createShowDTO } from "../model/Show";
 import { Authenticator } from "../services/Authenticator";
@@ -25,15 +25,48 @@ export class ShowController {
                 )
 
             return res
-                .send(200)
+                .status(200)
                 .send(getShowId)
                 .end()
 
-        } catch (err: CustomError | any) {
+        } catch (err: any) {
             res
                 .status(err.code || 500)
-                .send((err.message || "Internal Error",
-                    err.tips || "Something went wrong"))
+                .send({
+                    message: err.message || "Internal Error",
+                    error: err.tips || "Something went wrong"
+                })
+                .end()
+        }
+    }
+
+    public async getShowByWeekDay(req: Request, res: Response) {
+
+        try {
+
+            const showsList = await showBusiness
+                .getShowByWeekDay(
+                    req.params.weekDay as string
+                )
+
+            !showsList ?
+                res
+                    .status(204)
+                    .end()
+                : res
+                    .status(200)
+                    .send(showsList)
+                    .end()
+
+        } catch (err: any) {
+
+            res
+                .status(err.code || 500)
+                .send({
+                    message: err.message || "Internal Error",
+                    error: err.tips || "Something went wrong"
+                })
+                .end()
         }
     }
 

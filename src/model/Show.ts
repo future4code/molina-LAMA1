@@ -5,3 +5,10 @@ export interface createShowDTO {
     bandId: string,
     showId?: string
 }
+
+export type showsAgenda = {
+    name: string,
+    musicGenre: string,
+    startTime: number,
+    endTime: number
+  }
