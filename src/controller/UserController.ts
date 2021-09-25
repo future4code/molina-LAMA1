@@ -2,9 +2,13 @@ import { Request, Response } from "express";
 import { UserInputDTO, LoginInputDTO} from "../model/User";
 import { UserBusiness } from "../business/UserBusiness";
 import { BaseDatabase } from "../data/BaseDatabase";
+import { UserDatabase } from "../data/UserDatabase";
+import { IdGenerator } from "../services/IdGenerator";
 
 export class UserController {
+    constructor(private userBusiness:UserBusiness){}
     async signup(req: Request, res: Response) {
+       
         try {
 
             const input: UserInputDTO = {
@@ -13,10 +17,11 @@ export class UserController {
                 password: req.body.password,
                 role: req.body.role
             }
+           
 
-            const userBusiness = new UserBusiness();
+            // const userBusiness = new UserBusiness();
             const token = await userBusiness.createUser(input);
-
+            
             res.status(200).send({ token });
 
         } catch (error) {
@@ -35,7 +40,7 @@ export class UserController {
                 password: req.body.password
             };
 
-            const userBusiness = new UserBusiness();
+           
             const token = await userBusiness.getUserByEmail(loginData);
 
             res.status(200).send({ token });
@@ -48,3 +53,9 @@ export class UserController {
     }
 
 }
+
+const userDataBase = new UserDatabase()
+const userBusiness = new UserBusiness(userDataBase)
+const userController = new UserController(userBusiness)
+
+export default userController
