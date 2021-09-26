@@ -61,7 +61,7 @@ export class UserBusiness {
         if (!user.email) {
             throw new Error("Empty 'Email'")
         } else if (
-            this.emailValidation.isValidEmail(user.email)
+            !this.emailValidation.isValidEmail(user.email)
         ) {
             throw new Error("Invalid 'Email'")
         }
